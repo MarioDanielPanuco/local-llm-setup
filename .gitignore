@@ -1,0 +1,10 @@
+# Downloaded binaries, models and logs - fetched by setup.ps1 / llama-server
+llama.cpp/
+downloads/
+models/
+logs/
+
+# Secrets: local MCP config and env files may contain API keys
+mcp.json
+.env
+.env.*
