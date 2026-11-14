@@ -9,6 +9,8 @@
 # Set $env:HF_TOKEN beforehand for gated repos / higher download rate limits.
 # Extra llama-server flags can be appended, e.g.  .\serve.ps1 -Model ... --api-key secret
 
+# PositionalBinding off: otherwise "--alias" after -Model gets bound to -Port.
+[CmdletBinding(PositionalBinding = $false)]
 param(
     [Parameter(Mandatory = $true)][string]$Model,
     [int]$Port = 8080,
