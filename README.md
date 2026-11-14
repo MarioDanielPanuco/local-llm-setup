@@ -84,6 +84,47 @@ A local file works too: `-Model .\models\something.gguf`.
 | `-Port` | `8080` | Port to listen on |
 | anything else | | Passed straight to `llama-server` (see `.\llama.cpp\llama-server.exe --help`) |
 
+### Context size
+
+Context size is how much text (in tokens, roughly ¾ of a word each) the model can keep in view at once:
+your conversation so far, any files or search results, and its reply. Set it with `-Ctx`:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\serve.ps1 -Model ornith-ai/Ornith-1.5-9B-GGUF:Q8_0 -Ctx 16384 --alias local
+```
+
+| `-Ctx` | Good for |
+|---|---|
+| `8192` | Short chats, 8 GB cards |
+| `16384` | Normal chat |
+| `32768` | Default. Long chats, web search, small coding tasks |
+| `65536` | Coding agents and long documents, if you have VRAM to spare |
+| `0` | The model's maximum. Often 256k+, which will not fit on a gaming card |
+
+Bigger context uses more VRAM. If replies get very slow after raising it, it no longer fits; go back down or use a smaller quant.
+When a conversation grows past the context size, the oldest part is dropped or the app reports an error, so start a new chat.
+
+Check what the running server is using (look for `n_ctx`):
+
+```powershell
+curl.exe -s http://127.0.0.1:8080/v1/models
+```
+
+### More examples
+
+Options can be combined in any order after `-Model`:
+
+```powershell
+# Different port
+powershell -ExecutionPolicy Bypass -File .\serve.ps1 -Model ornith-ai/Ornith-1.5-9B-GGUF:Q8_0 -Port 8081 --alias local
+
+# Smaller quant with a small context, for an 8 GB card
+powershell -ExecutionPolicy Bypass -File .\serve.ps1 -Model ornith-ai/Ornith-1.5-9B-GGUF:Q4_K_M -Ctx 8192 --alias local
+
+# A GGUF file you downloaded yourself
+powershell -ExecutionPolicy Bypass -File .\serve.ps1 -Model .\models\my-model.gguf -Ctx 16384 --alias local
+```
+
 Downloads from gated repos, or faster downloads, need a Hugging Face token in the `HF_TOKEN` environment variable.
 
 ## 4. Use it from other apps
