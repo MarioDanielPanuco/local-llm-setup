@@ -136,6 +136,40 @@ Exa works without a key at a limited free rate. For your own limits, create a ke
 
 `mcp.json` is in `.gitignore` so the key is not uploaded by accident.
 
+## Managing downloaded models
+
+Models downloaded with `-Model <user>/<repo>` are stored in the Hugging Face cache, not in this folder:
+
+```
+%USERPROFILE%\.cache\huggingface\hub
+```
+
+Each model gets its own folder named `models--<user>--<repo>`.
+
+**See what is downloaded and how big it is:**
+
+```powershell
+Get-ChildItem "$env:USERPROFILE\.cache\huggingface\hub" -Directory -Filter 'models--*' | ForEach-Object { '{0,8:N2} GB  {1}' -f ((Get-ChildItem $_.FullName -File -Recurse | Measure-Object Length -Sum).Sum / 1GB), $_.Name }
+```
+
+Example output:
+
+```
+    7.08 GB  models--Jackrong--DeepSeek-V4-Pro-Qwen3.5-9B-MTP-GGUF
+    9.97 GB  models--ornith-ai--Ornith-1.5-9B-GGUF
+```
+
+**Delete a model** by removing its folder. Stop the server first if it is using that model.
+
+```powershell
+Remove-Item -Recurse -Force "$env:USERPROFILE\.cache\huggingface\hub\models--ornith-ai--Ornith-1.5-9B-GGUF"
+```
+
+This is permanent, but nothing is lost: starting the model again simply downloads it again.
+You can also open the folder in Explorer (`explorer "$env:USERPROFILE\.cache\huggingface\hub"`) and delete folders there.
+
+`.gguf` files you placed in `.\models` yourself are ordinary files; delete them like any other.
+
 ## Safety notes
 
 - The server only listens on `127.0.0.1`, so only your own PC can reach it. Do not change `--host` unless you also set `--api-key`.
