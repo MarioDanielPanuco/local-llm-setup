@@ -136,6 +136,26 @@ Exa works without a key at a limited free rate. For your own limits, create a ke
 
 `mcp.json` is in `.gitignore` so the key is not uploaded by accident.
 
+## Stopping the server
+
+Any of these stops the model and frees your VRAM:
+
+- Press `Ctrl+C` in the PowerShell window that is running `serve.ps1`.
+- Close that PowerShell window.
+- From any other PowerShell window:
+
+  ```powershell
+  Stop-Process -Name llama-server
+  ```
+
+Check whether it is still running (prints nothing if it is stopped):
+
+```powershell
+Get-Process llama-server -ErrorAction SilentlyContinue
+```
+
+Nothing starts automatically. After a stop or a reboot, the model stays off until you run `serve.ps1` again.
+
 ## Managing downloaded models
 
 Models downloaded with `-Model <user>/<repo>` are stored in the Hugging Face cache, not in this folder:
