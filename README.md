@@ -69,7 +69,6 @@ The part after the colon is the quantization: smaller = less VRAM, slightly lowe
 | 12 GB | `ornith-ai/Ornith-1.5-9B-GGUF:Q6_K` | 7.6 GB |
 | 8 GB | `ornith-ai/Ornith-1.5-9B-GGUF:Q4_K_M` plus `-Ctx 8192` | 5.8 GB |
 
-Only the 16 GB row has been measured: an RTX 5080 used about 12 GB of VRAM and generated about 85 tokens per second.
 The other rows are estimates from file size. If the model is slow, it did not fit in VRAM; go one size down or lower `-Ctx`.
 
 Any GGUF model on Hugging Face works the same way: `-Model <user>/<repo>:<quant>`.
