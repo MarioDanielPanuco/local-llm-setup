@@ -224,6 +224,12 @@ Example output:
 ```powershell
 Remove-Item -Recurse -Force "$env:USERPROFILE\.cache\huggingface\hub\models--ornith-ai--Ornith-1.5-9B-GGUF"
 ```
+## Local CLI Client 
+
+```powershell
+# Opens llama CLI client with the hf model mradermacher/DeepSeek-V4-Pro-Qwen3.5-9B-UNCENSORED-heretic-GGUF:Q8_0
+.\llama-cli.ps1
+```
 
 This is permanent, but nothing is lost: starting the model again simply downloads it again.
 You can also open the folder in Explorer (`explorer "$env:USERPROFILE\.cache\huggingface\hub"`) and delete folders there.
